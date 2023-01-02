@@ -149,7 +149,7 @@ C_INCLUDES =  \
 -I./$(LIB_DIR)/system/Drivers/$(BUILD_SERIES)_HAL_Driver/Inc \
 -I./$(LIB_DIR)/system/Drivers/$(BUILD_SERIES)_HAL_Driver/Src \
 -I./$(LIB_DIR)/system/uvos_hal/$(BUILD_SERIES) \
-"-I./$(VARIANT_DIR)" \
+'-I./$(VARIANT_DIR)' \
 -I$(CMSIS_PATH)/CMSIS/Core/Include \
 
 # CFLAGS1 = -mapcs-frame -fomit-frame-pointer
@@ -183,7 +183,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = "$(VARIANT_DIR)/ldscript.ld"
+LDSCRIPT = '$(VARIANT_DIR)/ldscript.ld'
 
 # libraries
 LIBS = -lc -lm -lnosys 
@@ -212,15 +212,15 @@ vpath %.S $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.c Makefile file_list.txt | $(BUILD_DIR)
 	$(info CC $@)
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) "$<" -o $@
+	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) '$<' -o $@
 
 $(BUILD_DIR)/%.o: %.cpp Makefile file_list.txt | $(BUILD_DIR)
 	$(info CPP $@)
-	$(CXX) -c $(CPPFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) "$<" -o $@
+	$(CXX) -c $(CPPFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) '$<' -o $@
 
 $(BUILD_DIR)/%.o: %.S Makefile file_list.txt | $(BUILD_DIR)
 	$(info AS $@)
-	$(AS) -c $(CFLAGS) "$<" -o $@
+	$(AS) -c $(CFLAGS) '$<' -o $@
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile file_list.txt
 	$(info LD linking)
@@ -239,7 +239,7 @@ $(BUILD_DIR):
 # Flash firmware into chip 
 .PHONY: flash
 flash:
-	"C:/Program Files/SEGGER/Ozone/Ozone.exe" $(TARGET).jdebug
+	'C:/Program Files/SEGGER/Ozone/Ozone.exe' $(TARGET).jdebug
 
 
 #######################################
