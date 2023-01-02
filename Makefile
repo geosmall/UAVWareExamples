@@ -149,7 +149,7 @@ C_INCLUDES =  \
 -I./$(LIB_DIR)/system/Drivers/$(BUILD_SERIES)_HAL_Driver/Inc \
 -I./$(LIB_DIR)/system/Drivers/$(BUILD_SERIES)_HAL_Driver/Src \
 -I./$(LIB_DIR)/system/uvos_hal/$(BUILD_SERIES) \
--I./$(VARIANT_DIR) \
+"-I./$(VARIANT_DIR)" \
 -I$(CMSIS_PATH)/CMSIS/Core/Include \
 
 # CFLAGS1 = -mapcs-frame -fomit-frame-pointer
@@ -167,7 +167,7 @@ ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffuncti
 
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -std=gnu99 -fdata-sections -ffunction-sections -Wno-address-of-packed-member -Wno-cast-align
 
-CPPFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -std=c++11 -fdata-sections -ffunction-sections -Wno-address-of-packed-member -Wno-cast-align
+CPPFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -std=c++11 -fdata-sections -ffunction-sections -Wno-address-of-packed-member -Wno-cast-align -Wno-unused-variable
 
 INOFLAGS = -Wno-unused-variable
 
@@ -183,7 +183,7 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = $(VARIANT_DIR)/ldscript.ld
+LDSCRIPT = "$(VARIANT_DIR)/ldscript.ld"
 
 # libraries
 LIBS = -lc -lm -lnosys 
@@ -194,7 +194,7 @@ LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BU
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin $(BUILD_DIR)/combined.cpp
 
 $(BUILD_DIR)/combined.cpp: $(INO_SOURCES) | $(BUILD_DIR)
-	cmd /C cat $(INO_SOURCES) > $@
+	cat $(INO_SOURCES) > $@
 
 #######################################
 # build the application
@@ -212,15 +212,15 @@ vpath %.S $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.c Makefile file_list.txt | $(BUILD_DIR)
 	$(info CC $@)
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) "$<" -o $@
 
 $(BUILD_DIR)/%.o: %.cpp Makefile file_list.txt | $(BUILD_DIR)
 	$(info CPP $@)
-	$(CXX) -c $(CPPFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	$(CXX) -c $(CPPFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) "$<" -o $@
 
 $(BUILD_DIR)/%.o: %.S Makefile file_list.txt | $(BUILD_DIR)
 	$(info AS $@)
-	$(AS) -c $(CFLAGS) $< -o $@
+	$(AS) -c $(CFLAGS) "$<" -o $@
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile file_list.txt
 	$(info LD linking)
