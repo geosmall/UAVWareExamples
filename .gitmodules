@@ -1,0 +1,8 @@
+[submodule "dRehmFlight"]
+	path = dRehmFlight
+	url = https://github.com/geosmall/dRehmFlight
+	branch = STM32
+[submodule "Arduino_STM32_LL"]
+	path = Arduino_STM32_LL
+	url = https://github.com/geosmall/Arduino_STM32_LL.git
+	branch = main
